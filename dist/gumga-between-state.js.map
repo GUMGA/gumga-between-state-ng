@@ -1,0 +1,15 @@
+{
+  "version": 3,
+  "sources": [
+    "../node_modules/browser-pack/_prelude.js",
+    "../src/between-state.js"
+  ],
+  "names": [],
+  "mappings": "AAAA;YCAA,IAAM,cAAe,QAAf,wBASJ,SAAA,WACE,KAAA,aAEF,iBACS,MAAP,aAEF,WAAA,WACE,OAAA,aAEF,mBACS,MAAP,eAEF,mBAAA,WACE,eAAA,aAEF,2BACS,MAAP,8BAxBK,gBAAA,kBAAA,oBAAA,4BAAA,oCAAP,mBA4BF,SAAA,OAAA,yBAAA,QAAA,eAAA",
+  "file": "generated.js",
+  "sourceRoot": "",
+  "sourcesContent": [
+    "(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require==\"function\"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error(\"Cannot find module '\"+o+\"'\");throw f.code=\"MODULE_NOT_FOUND\",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require==\"function\"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})",
+    "const BetweenState = () => {\n  return {\n    setPage: setPage,\n    getPage: getPage,\n    setSearch: setSearch,\n    getSearch: getSearch,\n    setAdvancedSearch: setAdvancedSearch,\n    getAdvancedSearch: getAdvancedSearch\n  }\n  function setPage(page) {\n    this.page = page\n  }\n  function getPage() {\n    return this.page\n  }\n  function setSearch(data) {\n    this.search = data\n  }\n  function getSearch() {\n    return this.search\n  }\n  function setAdvancedSearch(data) {\n    this.advancedSearch = data\n  }\n  function getAdvancedSearch() {\n    return this.advancedSearch\n  }\n\n}\nangular\n  .module('gumga.betweenstate', [])\n  .service('BetweenState', BetweenState)"
+  ]
+}

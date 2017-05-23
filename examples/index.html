@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="app">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h1>Gumga Between State</h1>
+
+      <div ui-view></div>
+
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="../node_modules/angular/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+  <script src="../node_modules/gumga-list-ng/dist/gumga-list.min.js"></script>
+  <script src="../node_modules/gumga-rest-ng/dist/gumga-rest.min.js"></script>
+  <script src="../node_modules/gumga-controller-ng/dist/gumga-controller.min.js"></script>
+  <script src="../node_modules/gumga-generic-filter-ng/dist/gumga-generic-filter.js"></script>
+  <script src="../node_modules/gumga-query-filter-ng/dist/gumga-query-filter.js"></script>
+  <script src="../dist/gumga-between-state.min.js"></script>
+  <script>
+    angular
+      .module('app', ['ui.bootstrap','ui.router', 'gumga.rest', 'gumga.controller', 'gumga.genericfilter', 'gumga.queryfilter', 'gumga.list', 'gumga.betweenstate'])
+      .config(function ($httpProvider, $stateProvider) {
+        $stateProvider
+          .state('app', {
+            url: '/list?page',
+            templateUrl: './list.html',
+            controller: 'ListCtrl'
+          })
+          .state('edit', {
+            url: '/edit/:id',
+            templateUrl: 'edit.html',
+            controller: 'EditCtrl'
+          })
+        $httpProvider.defaults.headers.common['gumgaToken'] = 'homologacaokids'
+      })
+      .controller('ListCtrl', ['gumgaController', 'GumgaRest', '$scope', '$http', '$state', '$timeout','BetweenState', function (gumgaController, GumgaRest, $scope, $http, $state, $timeout, BetweenState) {
+        var HistoricoService = new GumgaRest('http://192.168.25.250/gileadeweb-api/api/historico')
+        gumgaController.createRestMethods($scope, HistoricoService, 'historico')
+
+        $timeout(function() {
+          if (BetweenState.getSearch()) {
+            var search = BetweenState.getSearch()
+            $scope.search(search.field, search.param)
+          }
+          if (BetweenState.getAdvancedSearch()) {
+            $scope.advancedSearch(BetweenState.getAdvancedSearch())
+          }
+          $scope.page = BetweenState.getPage();
+          $scope.get($scope.page)
+        })
+
+        // Page
+        $scope.get = function() {
+          console.log('get: ', $scope.page)
+          BetweenState.setPage($scope.page)
+          $scope.historico.methods.get($scope.page)
+        }
+        // Search
+        $scope.search = function (field, param) {
+          console.log('search:', field, param)
+          BetweenState.setSearch({field: field, param: param})
+          $scope.historico.methods.search(field, param)
+          BetweenState.setAdvancedSearch(null)
+        }
+        // Advanced Search
+        $scope.advancedSearch = function (param) {
+          console.log('advanced: ', param)
+          BetweenState.setAdvancedSearch(param)
+          $scope.historico.methods.advancedSearch(param)
+          BetweenState.setSearch(null)
+        }
+
+        $scope.tableConfig = {
+          columns: 'historico, view',
+          // headers: false,
+          checkbox: true,
+          selection: "multi",
+          columnsConfig: [
+            {
+              name: 'historico',
+              title: 'Histórico',
+              content: '{{$value.historico}}',
+              sortField: 'historico',
+              conditional: function(value) {
+                return (value < 10)
+              }
+            },
+            {
+              name: 'view',
+              title: ' ',
+              content: '<span class="pull-right"><a uib-tooltip="View" class="btn btn-primary btn-sm" ui-sref="edit({id: $value.id })"><i class="glyphicon glyphicon-eye-open"></i></a></span>'
+            }
+          ]
+        }
+      }])
+      .controller('EditCtrl', ['gumgaController', 'GumgaRest', '$scope', '$http', function (gumgaController, GumgaRest, $scope, $http) {
+
+      }])
+  </script>
+</body>
+
+</html>

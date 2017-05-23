@@ -1,0 +1,16 @@
+<form name="Example">
+  <gumga-query search="search(field, param)" advanced-search="advancedSearch(param)" search-text="Pesquisar">
+    <search-field field="historico" label="Descrição" select="true"></search-field>
+    <advanced-search-field type="string" label="Descrição" field="historico"></advanced-search-field>
+  </gumga-query>
+</form>
+<gumga-list sort="historico.methods.sort(field, dir)" class="table-striped table-condensed" data="historico.data" configuration="tableConfig"></gumga-list>
+
+<ul
+  uib-pagination
+  ng-model="page"
+  ng-change="get()"
+  ng-show="historico.data.length > 0"
+  items-per-page="historico.pageSize"
+  total-items="historico.count">
+</ul>
