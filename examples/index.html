@@ -24,7 +24,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
   <script src="../node_modules/gumga-list-ng/dist/gumga-list.min.js"></script>
-  <script src="../node_modules/gumga-rest-ng/dist/gumga-rest.min.js"></script>
+  <script src="../node_modules/gumga-rest-ng/dist/gumga-rest.js"></script>
   <script src="../node_modules/gumga-controller-ng/dist/gumga-controller.min.js"></script>
   <script src="../node_modules/gumga-generic-filter-ng/dist/gumga-generic-filter.js"></script>
   <script src="../node_modules/gumga-query-filter-ng/dist/gumga-query-filter.js"></script>
@@ -50,23 +50,14 @@
         var HistoricoService = new GumgaRest('http://192.168.25.250/gileadeweb-api/api/historico')
         gumgaController.createRestMethods($scope, HistoricoService, 'historico')
 
-        $timeout(function() {
-          if (BetweenState.getSearch()) {
-            var search = BetweenState.getSearch()
-            $scope.search(search.field, search.param)
-          }
-          if (BetweenState.getAdvancedSearch()) {
-            $scope.advancedSearch(BetweenState.getAdvancedSearch())
-          }
-          $scope.page = BetweenState.getPage();
-          $scope.get($scope.page)
-        })
+        BetweenState.initController($scope, 'historico')
 
         // Page
         $scope.get = function() {
           BetweenState.setPage($scope.page)
           $scope.historico.methods.get($scope.page)
         }
+
         // Search
         $scope.search = function (field, param) {
           BetweenState.setSearch({field: field, param: param})
@@ -84,6 +75,7 @@
           columns: 'historico, view',
           // headers: false,
           checkbox: true,
+          materialTheme: true,
           selection: "multi",
           columnsConfig: [
             {

@@ -4,8 +4,15 @@
     <advanced-search-field type="string" label="Descrição" field="historico"></advanced-search-field>
   </gumga-query>
 </form>
-<gumga-list sort="historico.methods.sort(field, dir)" class="table-striped table-condensed" data="historico.data" configuration="tableConfig"></gumga-list>
 
+<gumga-list sort="historico.methods.sort(field, dir)"
+            class="table-striped table-condensed"
+            data="historico.data"
+            page-model="page"
+            page-size="historico.pageSize"
+            count="historico.count"
+            on-page-change="get()"
+            configuration="tableConfig"></gumga-list>
 <ul
   uib-pagination
   ng-model="page"
