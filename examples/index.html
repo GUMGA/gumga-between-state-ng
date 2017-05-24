@@ -64,20 +64,17 @@
 
         // Page
         $scope.get = function() {
-          console.log('get: ', $scope.page)
           BetweenState.setPage($scope.page)
           $scope.historico.methods.get($scope.page)
         }
         // Search
         $scope.search = function (field, param) {
-          console.log('search:', field, param)
           BetweenState.setSearch({field: field, param: param})
           $scope.historico.methods.search(field, param)
           BetweenState.setAdvancedSearch(null)
         }
         // Advanced Search
         $scope.advancedSearch = function (param) {
-          console.log('advanced: ', param)
           BetweenState.setAdvancedSearch(param)
           $scope.historico.methods.advancedSearch(param)
           BetweenState.setSearch(null)
